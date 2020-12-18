@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "esnext",
+    "module": "esnext",
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@frontend/*": [
+        "src/*"
+      ],
+      "@recall/*": [
+        "../recall/src/*"
+      ],
+      "@backend/endpoints": [
+        "../backend/src/endpoints"
+      ]
+    },
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
+  }
+}

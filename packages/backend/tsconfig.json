@@ -1,0 +1,27 @@
+{
+  "extends": "../../tsconfig.settings.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "@recall/*": [
+        "../recall/src/*"
+      ],
+      "@backend/*": [
+        "src/*"
+      ]
+    },
+    "lib": [
+      "es2020"
+    ]
+  },
+  "include": [
+    "./src/**/*.ts"
+  ],
+  "references": [
+    {
+      "path": "../recall"
+    }
+  ]
+}
