@@ -1,22 +1,15 @@
-export const endpoints = {
-  calculator: {
-    async sum(a: number, b: number) {
-      return a + b;
-    },
-    async sub(a: number, b: number) {
-      return a - b;
-    },
-    async mul(a: number, b: number) {
-      return a * b;
-    },
-    async div(a: number, b: number) {
-      if (b == 0) {
-        throw new Error("Division by zero");
-      }
+import {workspaces} from "@backend/api/workspaces";
+import {profiles} from "@backend/api/profiles";
+import {TConsumerInterface} from "@recall/shared/endpoints";
 
-      return a / b;
-    },
-  },
+export const endpoints = {
+  workspaces,
+  profiles,
 };
 
-export type TServer = typeof endpoints;
+// TODO: investigate a way to automatically infer
+// interface for caller; probably possible using
+// mapped types
+
+// TODO: this can be improved
+export type IServer = TConsumerInterface<typeof endpoints>;

@@ -16,5 +16,8 @@
   "$path": {
     "name": "@recall",
     "target": "dist"
+  },
+  "peerDependencies": {
+    "joi": "^17.3.0"
   }
 }

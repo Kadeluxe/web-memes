@@ -1,9 +1,10 @@
 import {NextFunction, Request, Response} from "express";
-import {TEndpointsTable, TRecallServerOptions} from "@recall/shared/types";
+import {TRecallServerOptions} from "@recall/shared/types";
 import {Recall} from "@recall/shared/recall";
+import {TEndpointTable} from "@recall/shared/endpoints";
 
-export function recall<TContext>(endpoints: TEndpointsTable, options: TRecallServerOptions<TContext>) {
-  const recallServer = new Recall(endpoints);
+export function recall<TContext>(endpoints: TEndpointTable, options: TRecallServerOptions<TContext>) {
+  const recall = new Recall(endpoints);
 
   return async function (req: Request, res: Response, next: NextFunction) {
     if (req.method != "POST") {
@@ -27,7 +28,11 @@ export function recall<TContext>(endpoints: TEndpointsTable, options: TRecallSer
     }
 
     const context = options.context !== undefined ? await options.context(req, res) : <TContext>{};
-    const result = await recallServer.callEndpoint(path, args, context);
+    const result = await recall.callLocalEndpoint(path, args, context);
+
+    if (result.exception && result.exception.code != undefined) {
+      res.status(result.exception.code);
+    }
 
     res.json(result);
   };

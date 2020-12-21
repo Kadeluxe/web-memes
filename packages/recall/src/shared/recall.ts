@@ -1,13 +1,14 @@
-import {IRecallResponse, TEndpoint, TEndpointsTable} from "@recall/shared/types";
+import {IRecallResponse} from "@recall/shared/types";
+import {TEndpointTable, TLocalEndpoint} from "@recall/shared/endpoints";
 
 export class Recall<TContext> {
   public constructor(
-    protected endpoints: TEndpointsTable,
+    protected endpoints: TEndpointTable,
   ) {
 
   }
 
-  public async callEndpoint(path: string, args: any[], context: TContext) {
+  public async callLocalEndpoint(path: string, args: any[], context: TContext) {
     const endpoint = this.getEndpoint(path);
     if (!endpoint) {
       throw new Error("Endpoint not found"); // TODO
@@ -16,22 +17,16 @@ export class Recall<TContext> {
     let result: IRecallResponse;
 
     try {
-      const returnData = await endpoint.apply(context, args);
+      endpoint.before?.forEach(hook => hook.call(context, args));
 
+      const returnData = await endpoint.handler.apply(context, args);
       result = {
         returnData,
       };
-    } catch (e) {
-      console.log(e);
+    } catch (exception) {
       result = {
-        exception: {
-          message: e.message,
-          data: e.data,
-          isRemoteError: true,
-          isNetworkError: false,
-        },
+        exception,
       };
-      console.log(result);
     }
 
     return result;
@@ -42,13 +37,13 @@ export class Recall<TContext> {
 
     const parts = path.split(".");
 
-    let current: TEndpointsTable | TEndpoint = this.endpoints;
+    let current: TEndpointTable | TLocalEndpoint = this.endpoints;
     for (const it of parts) {
-      current = (<TEndpointsTable>current)[it];
+      current = (<TEndpointTable>current)[it];
     }
 
-    if (typeof current == "function") {
-      return <TEndpoint>current;
+    if (current != undefined && "handler" in current) {
+      return <TLocalEndpoint>current;
     }
 
     return undefined;

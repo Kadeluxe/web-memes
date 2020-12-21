@@ -1,15 +1,15 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
-import CalculatorView from "@frontend/ui/calculator/views/CalculatorView.vue";
+import WorkspaceCreationView from "@frontend/ui/workspaces/views/WorkspaceCreationView.vue";
 
 export enum ROUTES {
-  CALCULATOR = "CALCULATOR",
+  WORKSPACE_CREATION = "WORKSPACE_CREATION",
 }
 
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
-    component: CalculatorView,
-    name: ROUTES.CALCULATOR,
+    component: WorkspaceCreationView,
+    name: ROUTES.WORKSPACE_CREATION,
   },
 ];
 

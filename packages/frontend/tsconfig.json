@@ -16,6 +16,9 @@
       "@recall/*": [
         "../recall/src/*"
       ],
+      "@shared/*": [
+        "../shared/src/*"
+      ],
       "@backend/endpoints": [
         "../backend/src/endpoints"
       ]
